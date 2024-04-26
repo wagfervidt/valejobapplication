@@ -1,0 +1,140 @@
+_schema-version: "3.1"
+ID: valejobapplication
+description: A simple CAP project.
+version: 1.0.0
+modules:
+- name: valejobapplication-srv
+  type: nodejs
+  path: gen/srv
+  requires:
+  - name: valejobapplication-db
+  - name: uaa_valejobapplication
+  provides:
+  - name: srv-api
+    properties:
+      srv-url: ${default-url}
+  parameters:
+    buildpack: nodejs_buildpack
+    readiness-health-check-http-endpoint: /health
+    readiness-health-check-type: http
+  build-parameters:
+    builder: npm
+- name: valejobapplication-db-deployer
+  type: hdb
+  path: gen/db
+  requires:
+  - name: valejobapplication-db
+  parameters:
+    buildpack: nodejs_buildpack
+- name: valejobapplication-destination-content
+  type: com.sap.application.content
+  requires:
+  - name: valejobapplication-destination-service
+    parameters:
+      content-target: true
+  - name: valejobapplication_html_repo_host
+    parameters:
+      service-key:
+        name: valejobapplication_html_repo_host-key
+  - name: uaa_valejobapplication
+    parameters:
+      service-key:
+        name: uaa_valejobapplication-key
+  parameters:
+    content:
+      instance:
+        destinations:
+        - Name: jobapprouter_valejobapplication_html_repo_host
+          ServiceInstanceName: valejobapplication-html5-app-host-service
+          ServiceKeyName: valejobapplication_html_repo_host-key
+          sap.cloud.service: jobapprouter
+        - Authentication: OAuth2UserTokenExchange
+          Name: jobapprouter_uaa_valejobapplication
+          ServiceInstanceName: valejobapplication-xsuaa-service
+          ServiceKeyName: uaa_valejobapplication-key
+          sap.cloud.service: jobapprouter
+        existing_destinations_policy: ignore
+  build-parameters:
+    no-source: true
+- name: valejobapplication-app-content
+  type: com.sap.application.content
+  path: .
+  requires:
+  - name: valejobapplication_html_repo_host
+    parameters:
+      content-target: true
+  build-parameters:
+    build-result: resources
+    requires:
+    - artifacts:
+      - comvalejobapplicationuijobapplicationui.zip
+      name: comvalejobapplicationuijobapplicationui
+      target-path: resources/
+- name: comvalejobapplicationuijobapplicationui
+  type: html5
+  path: app/jobapplicationui
+  build-parameters:
+    build-result: dist
+    builder: custom
+    commands:
+    - npm install
+    - npm run build:cf
+    supported-platforms: []
+resources:
+- name: valejobapplication-db
+  type: com.sap.xs.hdi-container
+  parameters:
+    service: hana
+    service-plan: hdi-shared
+- name: valejobapplication-destination-service
+  type: org.cloudfoundry.managed-service
+  parameters:
+    config:
+      HTML5Runtime_enabled: true
+      init_data:
+        instance:
+          destinations:
+          - Authentication: NoAuthentication
+            Name: ui5
+            ProxyType: Internet
+            Type: HTTP
+            URL: https://ui5.sap.com
+          - Authentication: NoAuthentication
+            HTML5.DynamicDestination: true
+            HTML5.ForwardAuthToken: true
+            Name: valejobapplication-srv-api
+            ProxyType: Internet
+            Type: HTTP
+            URL: ~{srv-api/srv-url}
+          existing_destinations_policy: update
+      version: 1.0.0
+    service: destination
+    service-name: valejobapplication-destination-service
+    service-plan: lite
+  requires:
+  - name: srv-api
+- name: valejobapplication_html_repo_host
+  type: org.cloudfoundry.managed-service
+  parameters:
+    service: html5-apps-repo
+    service-name: valejobapplication-html5-app-host-service
+    service-plan: app-host
+- name: uaa_valejobapplication
+  type: org.cloudfoundry.managed-service
+  parameters:
+    config:
+      tenant-mode: dedicated
+      xsappname: valejobapplication-${space}
+    path: ./xs-security.json
+    service: xsuaa
+    service-name: valejobapplication-xsuaa-service
+    service-plan: application
+parameters:
+  deploy_mode: html5-repo
+  enable-parallel-deployments: true
+build-parameters:
+  before-all:
+  - builder: custom
+    commands:
+    - npm ci
+    - npx cds build --production

@@ -1,0 +1,186 @@
+<edmx:Edmx xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx" Version="4.0">
+    <edmx:Reference Uri="https://sap.github.io/odata-vocabularies/vocabularies/Common.xml">
+        <edmx:Include Namespace="com.sap.vocabularies.Common.v1" Alias="Common"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="https://sap.github.io/odata-vocabularies/vocabularies/UI.xml">
+        <edmx:Include Namespace="com.sap.vocabularies.UI.v1" Alias="UI"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="https://sap.github.io/odata-vocabularies/vocabularies/Communication.xml">
+        <edmx:Include Namespace="com.sap.vocabularies.Communication.v1" Alias="Communication"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="/v2/service/jobApplication/$metadata">
+        <edmx:Include Namespace="jobApplicationSrv"/>
+    </edmx:Reference>
+    <edmx:DataServices>
+        <Schema xmlns="http://docs.oasis-open.org/odata/ns/edm" Namespace="local">
+            <Annotations Target="jobApplicationSrv.JobRequisitionIntegrity">
+                <Annotation Term="UI.SelectionFields">
+                    <Collection>
+                        <PropertyPath>candidateFirstName</PropertyPath>
+                        <PropertyPath>candidateLastName</PropertyPath>
+                        <PropertyPath>jobTitle</PropertyPath>
+                        <PropertyPath>recruiterFirstName</PropertyPath>
+                        <PropertyPath>recruiterLastName</PropertyPath>
+                        <PropertyPath>jobCode</PropertyPath>
+                    </Collection>
+                </Annotation>
+                <Annotation Term="UI.LineItem">
+                    <Collection>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Value" Path="candidateFirstName"/>
+                            <PropertyValue Property="Label" String="Nome Candidato"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Value" Path="candidateLastName"/>
+                            <PropertyValue Property="Label" String="Sobrenome Candidato"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Value" Path="jobTitle"/>
+                            <PropertyValue Property="Label" String="Nome da Vaga"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Value" Path="recruiterFirstName"/>
+                            <PropertyValue Property="Label" String="Nome Recrutador"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Value" Path="recruiterLastName"/>
+                            <PropertyValue Property="Label" String="Sobrenome Recrutador"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Value" Path="jobCode"/>
+                            <PropertyValue Property="Label" String="Número da Vaga"/>
+                        </Record>
+                    </Collection>
+                </Annotation>
+            </Annotations>
+            <Annotations Target="jobApplicationSrv.PublicRelative">
+                <Annotation Term="UI.DataPoint" Qualifier="ql1">
+                    <Record Type="UI.DataPointType">
+                        <PropertyValue Property="Value" Path="firstName1"/>
+                        <PropertyValue Property="Criticality" Path="lastName1"/>
+                    </Record>
+                </Annotation>
+                <Annotation Term="UI.FieldGroup" Qualifier="ql2">
+                    <Record Type="UI.FieldGroupType">
+                        <PropertyValue Property="Data">
+                            <Collection>
+                                <Record Type="UI.DataField">
+                                    <PropertyValue Property="Label" String="Nome"/>
+                                    <PropertyValue Property="Value" Path="firstName1"/>
+                                </Record>
+                                <Record Type="UI.DataField">
+                                    <PropertyValue Property="Label" String="Sobrenome"/>
+                                    <PropertyValue Property="Value" Path="lastName1"/>
+                                </Record>
+                                <Record Type="UI.DataField">
+                                    <PropertyValue Property="Label" String="Grau parentesco"/>
+                                    <PropertyValue Property="Value" Path="kinshipDegree1"/>
+                                </Record>
+                                <Record Type="UI.DataField">
+                                    <PropertyValue Property="Label" String="Cidade/Estado"/>
+                                    <PropertyValue Property="Value" Path="city1"/>
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                        <PropertyValue Property="Label" String="Parente público 1"/>
+                    </Record>
+                </Annotation>
+                <Annotation Term="UI.Facets">
+                    <Collection>
+                        <Record Type="UI.ReferenceFacet">
+                            <PropertyValue Property="Label" String="Parentes em posição pública 1"/>
+                            <PropertyValue Property="ID" String="pl1"/>
+                            <PropertyValue Property="Target" AnnotationPath="@UI.FieldGroup#ql2"/>
+                        </Record>
+                        <Record Type="UI.ReferenceFacet">
+                            <PropertyValue Property="Label" String="Parentes em posição pública 2"/>
+                            <PropertyValue Property="ID" String="pl2"/>
+                            <PropertyValue Property="Target" AnnotationPath="@UI.FieldGroup#ql3"/>
+                        </Record>
+                        <Record Type="UI.ReferenceFacet">
+                            <PropertyValue Property="Label" String="Parentes em posição pública 3"/>
+                            <PropertyValue Property="ID" String="pl3"/>
+                            <PropertyValue Property="Target" AnnotationPath="@UI.FieldGroup#ql4"/>
+                        </Record>
+                        <Record Type="UI.ReferenceFacet">
+                            <PropertyValue Property="Label" String="Funcionário público?"/>
+                            <PropertyValue Property="ID" String="idpub"/>
+                            <PropertyValue Property="Target" AnnotationPath="@UI.FieldGroup#ql5"/>
+                        </Record>
+                    </Collection>
+                </Annotation>
+                <Annotation Term="UI.FieldGroup" Qualifier="ql3">
+                    <Record Type="UI.FieldGroupType">
+                        <PropertyValue Property="Data">
+                            <Collection>
+                                <Record Type="UI.DataField">
+                                    <PropertyValue Property="Label" String="Nome"/>
+                                    <PropertyValue Property="Value" Path="firstName2"/>
+                                </Record>
+                                <Record Type="UI.DataField">
+                                    <PropertyValue Property="Label" String="Sobrenome"/>
+                                    <PropertyValue Property="Value" Path="lastName2"/>
+                                </Record>
+                                <Record Type="UI.DataField">
+                                    <PropertyValue Property="Label" String="Grau parentesco"/>
+                                    <PropertyValue Property="Value" Path="kinshipDegree2"/>
+                                </Record>
+                                <Record Type="UI.DataField">
+                                    <PropertyValue Property="Label" String="Cidade/Estado"/>
+                                    <PropertyValue Property="Value" Path="city2"/>
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                        <PropertyValue Property="Label" String="Parente público 2"/>
+                    </Record>
+                </Annotation>
+                <Annotation Term="UI.FieldGroup" Qualifier="ql4">
+                    <Record Type="UI.FieldGroupType">
+                        <PropertyValue Property="Data">
+                            <Collection>
+                                <Record Type="UI.DataField">
+                                    <PropertyValue Property="Label" String="Nome"/>
+                                    <PropertyValue Property="Value" Path="firstName3"/>
+                                </Record>
+                                <Record Type="UI.DataField">
+                                    <PropertyValue Property="Label" String="Sobrenome"/>
+                                    <PropertyValue Property="Value" Path="lastName3"/>
+                                </Record>
+                                <Record Type="UI.DataField">
+                                    <PropertyValue Property="Label" String="Grau parentesco"/>
+                                    <PropertyValue Property="Value" Path="kinshipDegree3"/>
+                                </Record>
+                                <Record Type="UI.DataField">
+                                    <PropertyValue Property="Label" String="Cidade/Estado"/>
+                                    <PropertyValue Property="Value" Path="city3"/>
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                        <PropertyValue Property="Label" String="Parente publico 3"/>
+                    </Record>
+                </Annotation>
+                <Annotation Term="UI.FieldGroup" Qualifier="ql5">
+                    <Record Type="UI.FieldGroupType">
+                        <PropertyValue Property="Data">
+                            <Collection>
+                                <Record Type="UI.DataField">
+                                    <PropertyValue Property="Label" String="Atualmente, você é um funcionário do Governo?"/>
+                                    <PropertyValue Property="Value" Path="isPublicServant"/>
+                                </Record>
+                                <Record Type="UI.DataField">
+                                <PropertyValue Property="Label" String="Você foi funcionário do Governo que se aposentou ou pediu demissão do cargo nos 12 meses anteriores?"/>
+                                    <PropertyValue Property="Value" Path="hasBeenPublicServant"/>
+                                </Record>
+                                <Record Type="UI.DataField">
+                                <PropertyValue Property="Label" String="Comentarios"/>
+                                   <PropertyValue Property="Value" Path="comment"/>
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                        <PropertyValue Property="Label" String="Atualização"/>
+                    </Record>
+                </Annotation>
+            </Annotations>
+        </Schema>
+    </edmx:DataServices>
+</edmx:Edmx>
